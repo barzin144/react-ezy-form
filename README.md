@@ -27,7 +27,7 @@ npm install --save react-ezy-form
 Inside the form tag you should add at least one FormItem and one button with type="submit"
 
 ```javascript
-import { Form, FormItem, Input, ValidationType } from 'react-ezy-form';
+import { Form, FormItem, Input, PasswordInput, ValidationType } from 'react-ezy-form';
 
 //inside the form tag you should add at least one FormItem and one button with type="submit"
 
