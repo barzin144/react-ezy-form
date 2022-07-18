@@ -1,0 +1,38 @@
+.formItem {
+  display: block;
+  margin-bottom: rem(4px);
+  &--invalid {
+    .formControl {
+      border: 1px solid $red-2 !important;
+      outline: 0 !important;
+      &:focus,
+      &:focus-visible {
+        border-color: $red-2 !important;
+        box-shadow: 0 0 0 rem(4px) rgba($red-2, 0.25) !important;
+      }
+    }
+  }
+  .label {
+    display: block;
+    color: $grey-2;
+    font-size: $mdFontSize;
+    font-weight: $body-Bold;
+    margin-bottom: rem(8px);
+
+    &--required {
+      &::after {
+        content: ' *';
+        color: $red-1;
+      }
+    }
+  }
+  .validationErrorsContainer {
+    margin-top: rem(2px);
+    min-height: rem(18px);
+    .validationError {
+      display: block;
+      color: $red-1;
+      font-size: $smFontSize;
+    }
+  }
+}

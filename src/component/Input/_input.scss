@@ -1,0 +1,40 @@
+.input {
+  position: relative;
+  .textbox {
+    font-size: $mdFontSize;
+    font-weight: $body-regular;
+    border: 1px solid $white-2;
+    height: rem(32px);
+    border-radius: 4px;
+    display: inline-block;
+    line-height: 1;
+    padding: rem(4px) rem(8px);
+    width: 100%;
+    box-sizing: border-box;
+
+    &:focus,
+    &:focus-visible {
+      color: $grey-2;
+      background-color: $white-1;
+      border-color: $blue-1;
+      outline: 0;
+      box-shadow: 0 0 0 rem(4px) rgba($blue-1, 0.25);
+    }
+    &::placeholder {
+      color: $grey-4;
+    }
+    &--password {
+      padding-right: rem(20px);
+    }
+  }
+  .inputIcon {
+    cursor: pointer;
+    position: absolute;
+    top: rem(5px);
+    right: rem(5px);
+    svg {
+      width: rem(16px);
+      height: rem(16px);
+    }
+  }
+}
