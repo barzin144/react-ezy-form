@@ -35,7 +35,7 @@ export default [
       resolve(),
       commonjs(),
       typescript(),
-      terser(),
+      terser({ keep_classnames: true, keep_fnames: true }),
     ],
     external: ['react', 'react-dom'],
   },
