@@ -1,36 +1,37 @@
+
+# React Ezy Form
+
 ![preview](https://raw.githubusercontent.com/barzin144/react-ezy-form/main/.storybook/react-ezy-form.png)
 
-### This component will suitable for you if
+**React Ezy Form** is a simple yet powerful form generator that supports validation out of the box. It's designed to be intuitive and easy to integrate into any React project.
 
-## You want
+## Features
 
-> a form generator ?
+- Form generator with built-in validation
+- Customizable form items with flexible validation rules
+- Horizontal or vertical form layout
 
-> a form with validation ?
+## When to Use
 
-## Run component in storybook
+This component is suitable for you if you need:
 
-First clone the source then run
-or visit storybook online [Here](https://barzin144.github.io/react-ezy-form/?path=/story/components-form--vertical-form).
+- A quick and easy form generator
+- Validation for form fields (including custom validation)
 
-```bash
-npm start
-```
+## Installation
 
-## Install via NPM:
+To install via NPM, run:
 
 ```bash
 npm install --save react-ezy-form
 ```
 
-## Usage
+## Usage Example
 
-Inside the form tag you should add at least one FormItem and one button with type="submit"
+Here's a basic example of how to use the form generator with validation. In this form, we add fields for **username**, **email**, and **password**, with custom validation for each field.
 
 ```javascript
 import { Form, FormItem, Input, PasswordInput, ValidationType } from 'react-ezy-form';
-
-//inside the form tag you should add at least one FormItem and one button with type="submit"
 
 <Form onSubmit={(formValues) => console.log(formValues)}>
   <FormItem
@@ -45,6 +46,7 @@ import { Form, FormItem, Input, PasswordInput, ValidationType } from 'react-ezy-
   >
     <Input placeholder="Enter your username" />
   </FormItem>
+  
   <FormItem
     label="Email"
     name="email"
@@ -55,20 +57,21 @@ import { Form, FormItem, Input, PasswordInput, ValidationType } from 'react-ezy-
       },
       {
         type: ValidationType.regex,
-        message: 'You have entered an invalid email address',
+        message: 'Invalid email address',
         regexPattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       },
     ]}
   >
     <Input placeholder="Enter your email" />
   </FormItem>
+  
   <FormItem
     label="Password"
     name="password"
     rules={[
       {
         type: ValidationType.custom,
-        message: 'Your password is too easy',
+        message: 'Your password is too weak',
         validationFunction: (formValue) => {
           return formValue['password'] !== '123';
         },
@@ -77,47 +80,43 @@ import { Form, FormItem, Input, PasswordInput, ValidationType } from 'react-ezy-
   >
     <PasswordInput placeholder="Enter your password" />
   </FormItem>
-  <div>
-    <button type="submit" className="button button--primary">
-      Submit
-    </button>
-  </div>
+
+  <button type="submit" className="button button--primary">
+    Submit
+  </button>
 </Form>;
 ```
 
-## Form Options
+### Form Props
 
-|   Option   |         Type         |                              Description                              |
-| :--------: | :------------------: | :-------------------------------------------------------------------: |
-| onSubmit\* | (formValues) => void | when submit button has been clicked, onSubmit callback will be called |
-| horizontal |       boolean        |                      render the form horizental                       |
+| **Prop Name** |   **Type**   | **Description**                                                                 |
+| :-----------: | :----------: | :------------------------------------------------------------------------------ |
+|   onSubmit\*  | (formValues) => void | Callback that is triggered when the form is submitted, with form values passed as a parameter. |
+|  horizontal   |   boolean    | Set this to `true` to render the form in a horizontal layout (default is vertical). |
 
-## FormItem Options
+### FormItem Props
 
-Inside the FormItem tag, you should use a component that accepts these props
+Within the `FormItem` component, the child input component must accept the following props:
 
-```
-id:string
-name:string
-value:FormValueType
-onChange: (name: string, value: FormValueType) => void
-```
+- `id: string`
+- `name: string`
+- `value: FormValueType`
+- `onChange: (name: string, value: FormValueType) => void`
 
-### FormItem child example
+#### Example of a Custom Input Component
 
 ```javascript
-const Input = ({ onChange, name, id, value = '' }: InputProps): JSX.Element => {
-  const inputOnChange = (event: FormEvent<HTMLInputElement>): void => {
-    const value: string = event.currentTarget.value.trim();
-    //call onChange from FormItem
-    onChange(name, value);
+const Input = ({ onChange, name, id, value = '' }) => {
+  const handleInputChange = (event) => {
+    const value = event.currentTarget.value.trim();
+    onChange(name, value);  // Trigger onChange from FormItem
   };
 
   return (
     <input
       name={name}
       id={id}
-      onChange={inputOnChange}
+      onChange={handleInputChange}
       value={value}
       type="text"
       placeholder="Username"
@@ -126,20 +125,40 @@ const Input = ({ onChange, name, id, value = '' }: InputProps): JSX.Element => {
 };
 ```
 
-|    Option     |     Type      |                                        Description                                         |
-| :-----------: | :-----------: | :----------------------------------------------------------------------------------------: |
-|    name\*     |    string     | this name is used for creating formValue object that will be returned to onSubmit callback |
-| valuePropName |    string     | the key of value that will be sent to your component inside the formItem(Default is Value) |
-|     style     | CSSProperties |                                 custom style for FormItem                                  |
-|     rules     |    Rule[]     |                          array of rules for validate the formItem                          |
+### FormItem Validation Rules
 
-## Rule
+| **Prop Name**  |   **Type**   | **Description**                                                                 |
+| :------------: | :----------: | :------------------------------------------------------------------------------ |
+|    name\*      |   string     | Name used for the form value that will be returned to the `onSubmit` callback.   |
+| valuePropName  |   string     | Key of the value sent to your component inside the `FormItem` (default is `value`). |
+|     style      | CSSProperties | Custom styles for `FormItem`.                                                   |
+|     rules      |    Rule[]    | Array of validation rules for the `FormItem`.                                    |
 
-```javascript
+### Validation Rule Types
+
+```typescript
 interface Rule {
-  type: ValidationType; // "required" or "regex" or "custom"
-  message: string;
-  regexPattern?: RegExp; // only for ValidationType.regex
-  validationFunction?: (formValue: FormValues) => boolean; // only for ValidationType.custom
+  type: ValidationType;  // "required", "regex", or "custom"
+  message: string;       // Error message shown when validation fails
+  regexPattern?: RegExp; // For "regex" validation type
+  validationFunction?: (formValue: FormValues) => boolean; // For "custom" validation type
 }
 ```
+
+## Try it in Storybook
+
+You can explore and test this component in Storybook:
+
+- Visit the [online Storybook](https://barzin144.github.io/react-ezy-form/?path=/story/components-form--vertical-form)
+- Or run it locally by cloning the repository and running the following commands:
+
+```bash
+git clone https://github.com/barzin144/react-ezy-form.git
+cd react-ezy-form
+npm install
+npm start
+```
+
+## Contributing
+
+Feel free to contribute by creating issues or submitting pull requests. All contributions are welcome!
